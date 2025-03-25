@@ -78,991 +78,572 @@
                 column-width: 250px;
                 column-gap: 20px;
             }
-        </style>
-    </head>
-    <body>
-        <div class="header-wrapper">
-            <div class="header-container" id="header-container">
-                <div class="header-content">
-                    <h1 style="margin-top: 0px; font-size: xxx-large;">How Far is Video Generation from World Model?</h1>
-                    <h2 style="margin-top: 0px"><i>&mdash; A Physical Law Perspective</i></h2>
-                    <p>
-                        We conduct a systematic study to investigate whether video generation is able to learn physical laws from videos, leveraging  <em><strong>data and model scaling</strong></em>.
-                    </p>
-                    
-                    <div class="icon-container">
-                        <div class="icon-item">
-                            <img src="static/icon/cats.svg" alt="Generalization Scenario Icon">
-                            <div><strong>Generalization Scenarios</strong>: We consider three scenarios: in-distribution, out-of-distribution and combinatorial generalization.</div>
-                        </div>
-                        <div class="icon-item">
-                            <img src="./static/icon/task.svg" alt="Task Icon">
-                            <div><strong>Tasks</strong>: We consider physical events governed by one or more classical mechanics laws, e.g., <i>law of inertia</i>, <i>Newton's second law</i> and <i> the conservation of energy</i>.</div>
-                        </div>
-                        <div class="icon-item">
-                            <img src="./static/icon/data.svg" alt="Data">
-                            <div><strong>Data</strong>: We develop a 2D simulator with simple geometric shapes (eliminating textures), ensuring unlimited supply of data for scaling.</div>
-                        </div>
-                        <div class="icon-item">
-                            <img src="./static/icon/model.svg" alt="Model">
-                            <div><strong>Model</strong>: We use standard video generation model and focus on scaling-up.</div>
-                        </div>
-                        <div class="icon-item">
-                            <img src="./static/icon/keys.svg" alt="Messages">
-                            <div><strong>Key Messages</strong>: 
-                                We first summarize the <strong><i>generalization observations</i></strong> of video models,
-                                then analyze their underlying <strong><i>generalization mechanism</i></strong> and <strong><i>priority</i></strong>.
-                            </div>
-                        </div>
-                        <div class="icon-item">
-                            <img src="./static/icon/discussion.svg" alt="Discussion">
-                            <div><strong>Community</strong>:
-                                <a href="#twitter"> Click to view the lively discussions within the community.</a>
-                            </div>
-                        </div>
-                    </div>
+            .table-container {
+                margin: 20px 0;
+                overflow-x: auto;
+            }
+            
+            .table-container table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 0.9em;
+            }
+            
+            .table-container th, .table-container td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: center;
+            }
+            
+            .table-container th {
+                background-color: #f5f5f5;
+                font-weight: bold;
+            }
+            
+            .table-container tr:hover {
+                background-color: #f5f5f5;
+            }
+            
+            .table-container caption {
+                margin-bottom: 10px;
+                text-align: left;
+                font-weight: bold;
+            }
 
-                    <div class="button-container", style="text-align: center;">
-                        <a href="https://arxiv.org/abs/2411.02385" class="button paper-link" target="_blank">
-                            <span class="icon is-small">
-                                <i class="ai ai-arxiv"></i>
-                            </span>
-                            arXiv
-                        </a>
-                        <a href="https://arxiv.org/pdf/2411.02385" class="button paper-link" target="_blank">
-                            <span class="icon is-small">
-                                <i class="fas fa-file-pdf"></i>
-                            </span>
-                            <span>pdf</span>
-                        </a>
-                        <a href="https://github.com/phyworld/phyworld" class="button" target="_blank">
-                            <span class="icon is-small">
-                                <i class="fab fa-github"></i>
-                            </span>
-                            <span>Code</span>
-                        </a>
-                        <!-- <a href="https://huggingface.co/" class="button" target="_blank">
-                            <span class="icon is-small">
-                                <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face logo" style="height: 1em;">
-                            </span>
-                            <span>Models (Soon)</span>
-                        </a> -->
-                        <a href="https://huggingface.co/datasets/magicr/phyworld" class="button" target="_blank">
-                            <span class="icon is-small">
-                                <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face logo" style="height: 1em;">
-                            </span>
-                            <span>Data</span>
-                        </a>                        
-                    </div>
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 12px 15px;
+                border: 1px solid #ddd;
+                text-align: center;
+            }
+
+            .data-table th {
+                background-color: #f5f5f5;
+                font-weight: bold;
+            }
+
+            .data-table tr:hover {
+                background-color: #f5f5f5;
+            }
+        </style>
+        </head>
+        <body>
+            <div class="header-wrapper">
+                <div class="header-container" id="header-container">
+                    <div class="header-content">
+                        <h1 style="margin-top: 0px; font-size: xxx-large;">ImageGen-CoT</h1>
+                        <h2 style="margin-top: 0px; font-size: xx-large;">Enhancing Text-to-Image In-context Learning with Chain-of-Thought Reasoning</h2>
+                        <p>
+                            We propose a novel framework that generates a thought process (called ImageGen-CoT) to enhance the performance of unified MLLMs in T2I-ICL tasks. Our contributions can be summarized as follows:
+                        </p>
+                        <div class="contributions">
+                            <div class="contribution-item">
+                                <h3>🎯 Chain-of-Thought Prompting</h3>
+                                <p>We propose a novel framework that incorporates a thought process called ImageGen-CoT prior to image generation in T2I-ICL tasks.</p>
+                            </div>
+                            <div class="contribution-item">
+                                <h3>📊 FT w ImageGen-CoT dataset</h3>
+                                <p>We construct high-quality ImageGen-CoT datasets for fine-tuning unified MLLMs through an automatic dataset construction pipeline.</p>
+                            </div>
+                            <div class="contribution-item">
+                                <h3>⚡ Efficient Scaling Strategy</h3>
+                                <p>We explore Best-of-N test-time scaling up paradigms and propose a hybrid scaling approach that first generates multiple ImageGen-CoT chains and then generates multiple image variations per chain.</p>
+                            </div>
+                        </div>
+                        
+
+    
+                        <div class="button-container", style="text-align: center;">
+                            <a href="https://arxiv.org/abs/[YourPaperID]" class="button paper-link" target="_blank">
+                                <span class="icon is-small">
+                                    <i class="ai ai-arxiv"></i>
+                                </span>
+                                arXiv
+                            </a>
+                            <a href="static/ImageGen_CoT.pdf" class="button paper-link" target="_blank">
+                                <span class="icon is-small">
+                                    <i class="fas fa-file-pdf"></i>
+                                </span>
+                                <span>PDF</span>
+                            </a>
+                            <a href="https://github.com/JiaqiLiao77/ImageGen-CoT" class="button" target="_blank">
+                                <span class="icon is-small">
+                                    <i class="fab fa-github"></i>
+                                </span>
+                                <span>Code</span>
+                            </a>
+                            <a href="#" class="button" target="_blank">
+                                <span class="icon is-small">
+                                    <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face" style="height: 1em;">
+                                </span>
+                                <span>Data</span>
+                            </a>                        
+                        </div>
+
 
                 </div>
                 <div class="header-image">
-                    <img draggable="false" src="static/image/horizontal_margin.jpeg" class="teaser-image">
-
-                    <video  poster="" id="ade" autoplay controls muted loop width="100%" class="no-controls">
-                        <source src="static/video/teaser2x.mp4" type="video/mp4">
-                    </video>
-                    <img draggable="false" src="static/image/horizontal_margin.jpeg" class="teaser-image">
-
+                    <img draggable="false" src="static/image/ImageGen-CoT.webp" class="teaser-image" width="100%">
                 </div>
             </div>
         </div>
-
-    <!-- <p></p>
-    <br>
-    <p class="text abstract">
-    <h1 style="text-align: center;">How Far is Video Generation from World Model?</h1>
-    <h1 style="text-align: center;"><i>&mdash; A Physical Law Perspective</i></h1>
-    </p>
-        <div class="byline-container">
-            <p>
-                <a href="https://bingykang.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Bingyi Kang<sup>*</sup></a> &emsp;
-                <a href="https://yueyang130.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Yang Yue<sup>*</sup></a> &emsp;
-                <br>
-                <a href="https://lr32768.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Rui Lu</a> &emsp;
-                <a href="https://scholar.google.com/citations?user=xXMj6_EAAAAJ&hl=zh-CN" class="author-link" target="_blank" style="color: darkgreen;">Zhijie Lin</a> &emsp;
-                <a href="https://scholar.google.com/citations?user=uPmTOHAAAAAJ&hl=en" class="author-link" target="_blank" style="color: darkgreen;">Yang Zhao</a> &emsp;
-                <a href="https://kaixin96.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Kaixin Wang</a> &emsp;
-                <a href="https://www.gaohuang.net/" class="author-link" target="_blank" style="color: darkgreen;">Gao Huang</a> &emsp;
-                <a href="https://sites.google.com/site/jshfeng/" class="author-link" target="_blank" style="color: darkgreen;">Jiashi Feng</a> &emsp; 
-                <br>
-                <a class="author-link" target="_blank"><i>Bytedance Research</i></a>
-                <br>
-                <span class="author-note" style="color: black;"><sup>*</sup>Equal Contribution, in alphabetical order</span>
-            </p>
-        </div>
-
-    <div class="button-container", style="text-align: center;">
-        <a href="https://arxiv.org/abs/2406.16860" class="button paper-link" target="_blank">
-            <span class="icon is-small">
-                <i class="ai ai-arxiv"></i>
-            </span>
-            arXiv
-        </a>
-        <a href="https://arxiv.org/pdf/2406.16860" class="button paper-link" target="_blank">
-            <span class="icon is-small">
-                <i class="fas fa-file-pdf"></i>
-            </span>
-            <span>pdf</span>
-        </a>
-        <a href="https://github.com/phyworld/phyworld" class="button" target="_blank">
-            <span class="icon is-small">
-                <i class="fab fa-github"></i>
-            </span>
-            <span>Code</span>
-        </a>
-        <a href="" class="button" target="_blank">
-            <span class="icon is-small">
-                <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face logo" style="height: 1em;">
-            </span>
-            <span>Checkpoints (Coming Soon)</span>
-        </a>
-        <a href="https://huggingface.co/collections/nyu-visionx/cambrian-data-6667ce801e179b4fbe774e11" class="button" target="_blank">
-            <span class="icon is-small">
-                <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="Hugging Face logo" style="height: 1em;">
-            </span>
-            <span>Data</span>
-        </a>                        
-    </div> -->
     
     <d-article>
 
         <div class="byline">
             <div class="byline-container">
-                <p>
-                    <a href="https://bingykang.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Bingyi Kang<sup>*</sup></a> &emsp;
-                    <a href="https://yueyang130.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Yang Yue<sup>*</sup></a> &emsp;
-                    <br>
-                    <a href="https://lr32768.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Rui Lu</a> &emsp;
-                    <a href="https://scholar.google.com/citations?user=xXMj6_EAAAAJ&hl=zh-CN" class="author-link" target="_blank" style="color: darkgreen;">Zhijie Lin</a> &emsp;
-                    <a href="https://scholar.google.com/citations?user=uPmTOHAAAAAJ&hl=en" class="author-link" target="_blank" style="color: darkgreen;">Yang Zhao</a> &emsp;
-                    <a href="https://kaixin96.github.io/" class="author-link" target="_blank" style="color: darkgreen;">Kaixin Wang</a> &emsp;
-                    <a href="https://www.gaohuang.net/" class="author-link" target="_blank" style="color: darkgreen;">Gao Huang</a> &emsp;
-                    <a href="https://sites.google.com/site/jshfeng/" class="author-link" target="_blank" style="color: darkgreen;">Jiashi Feng</a> &emsp; 
-                    <br>
-                    <a class="author-link" target="_blank"><i>Bytedance Research</i></a>
-                    <br>
-                    <span class="author-note" style="color: black;"><sup>*</sup>Equal Contribution, in alphabetical order</span>
-                </p>
+                <div class="is-size-5 publication-authors">
+                    <div style="margin-bottom: px;">
+                        <span class="author-block">
+                            <a href="#" class="author-link" target="_blank" style="color: darkgreen;">Jiaqi Liao<sup>†</sup><sup style="color:#6fbf73;">1</sup></a>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" class="author-link" target="_blank" style="color: darkgreen;">Zhengyuan Yang<sup style="color:#6fbf73;">1</sup></a>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" class="author-link" target="_blank" style="color: darkgreen;">Linjie Li<sup style="color:#6fbf73;">1</sup></a>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" class="author-link" target="_blank" style="color: darkgreen;">Dianqi Li</a>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" class="author-link" target="_blank" style="color: darkgreen;">Kevin Lin<sup style="color:#6fbf73;">1</sup></a>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" class="author-link" target="_blank" style="color: darkgreen;">Yu Cheng<sup style="color:#ffac33;">2</sup></a>,
+                        </span>
+                        <span class="author-block">
+                            <a href="#" class="author-link" target="_blank" style="color: darkgreen;">Lijuan Wang<sup style="color:#6fbf73;">1</sup><sup>✉</sup></a>
+                        </span>
+                    </div>
+                </div>
+        
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup style="color:#6fbf73;">1</sup>Microsoft,</span>
+                    <span class="author-block"><sup style="color:#ffac33;">2</sup>The Chinese University of Hong Kong</span>
+                </div>
+        
+                <div class="is-size-5 publication-authors">
+                    <span class="author-note" style="color: black;">†Interns at Microsoft.</span>
+                </div>
             </div>
         </div>
-
-        <h1 class="text abstract" style="text-align: center; font-size: x-large; margin-bottom: 0%;">The Answer:</h1>
-        <h1 class="text abstract" style="color: orange; font-size: x-large; text-align: center; margin-bottom: 0%;"><i>Video generation fails to learn physical laws from video data, even with scaling.</i></h1>
-        <div class="text video-container" style="position: relative; padding-bottom: 35%; height: 0;">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/yWSn9Xyrkso" title="Is SORA really a world model?" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-        </div>
-
+        
         
 
         <p class="text abstract" style="margin-top: 5%;">
-            &#x1F449;<span style="color: blue;"><strong>What?</strong></span>&nbsp; We study whether video generation model is able to learn and stick to physical laws. <br>
+            <span style="color: blue;"><strong>Background</strong></span><br>
+            Human intelligence excels at learning novel concepts through contextual observation and adapting to new inputs. When presented with a series of interleaved text-image examples—such as "a leather-bound book," followed by "a leather apple"—and then asked to generate an image for the query "a box," humans intuitively infer the implicit pattern of "leather" and apply it to the new query, resulting in "a leather box." This reasoning ability to learn novel concepts from multimodal contexts underpins creative problem-solving. Existing unified Multimodal Large Language Models (unified MLLMs) have demonstrated remarkable capabilities in multimodal understanding and generation within a single model architecture. Given their ability to process and generate across modalities similar to human cognition, it is natural to investigate whether these models can exhibit reasoning capabilities comparable to those of humans. To evaluate this, we adopt the Text-to-Image In-Context Learning (T2I-ICL) task, which requires models to process interleaved text-image inputs and generate coherent outputs by learning from multimodal contexts (<a href="#figure-1">Figure 1</a>). Despite the impressive capabilities of unified MLLMs, our experiments reveal that they struggle to replicate this reasoning capability, often failing to grasp contextual relationships or preserve compositional consistency in T2I-ICL tasks.
         </p>
-        <p class="text abstract" style="margin-top: 0%;">
-            &#x1F449;<span style="color: blue;"><strong>Why?</strong></span> &nbsp;
-            OpenAI’s Sora<d-cite key="sora"></d-cite> highlights the potential of video generation for developing world models that adhere to fundamental physical laws,
-            according to the following quotation:
-            <p>
-                <i><strong>
-                Scaling video generation models is a promising path towards building general purpose simulators of the physical world.
-                </strong></i>
-            </p>
-            <p class="text abstract" style="margin-top: 0;">
-                However, the ability of video generation models to discover such laws purely from visual data without human priors can be questioned. 
-                A world model learning the true law should give predictions robust to nuances and correctly extrapolate on unseen scenarios.
-            </p>
-        </p>
+
+        <d-figure id="figure-1">
+            <figure>
+                <img data-zoomable="" draggable="false" src="static/image/teaser_00.jpg" alt="Explainable Analysis Figure" width="100%">
+                <figcaption>
+                    <strong>Figure 1:</strong> <strong>Comparisons between SEED-X and SEED-X FT w ImageGen-CoT dataset.</strong>
+                </figcaption>
+            </figure>
+        </d-figure>
         
-        <p class="text abstract", style="margin-top: 0%;">
-            &#x1F449;<span style="color: blue;"><strong>How?</strong></span> &nbsp;
-            Answering such an question is non-trivial as it is hard to tell whether a law has been learned or not.
 
+        <p class="text abstract" style="margin-top: 3%;">
+            <span style="color: blue;"><strong>Contribution</strong></span><br>
+            We propose a novel framework that generates a thought process (called ImageGen-CoT) to enhance the performance of unified MLLMs in T2I-ICL tasks. Our contributions can be summarized as follows:
             <ul class="text" style="margin-top: 0%; padding-left: 10%;">
-                <li style="margin-bottom: 0;"><strong><i>Evaluation</i></strong> &nbsp; We use three key scenarios: in-distribution, out-of-distribution, and combinatorial generalization. </li>
-                <li style="margin-bottom: 0;"><strong><i>Tasks</i></strong> &nbsp; We consider physical events governed by one or more classical mechanics laws, <i>e.g.</i>, elastic collision. </li>
-                <li style="margin-bottom: 0;"><strong><i>Data</i></strong> &nbsp; We develop a 2D simulator with simple geometric shapes (eliminating textures), for unlimited supply of data.</li>
-                <li style="margin-bottom: 0;"><strong><i>Model</i></strong> &nbsp; We use standard video generation model without any specific designs and focus on scaling-up. </li>
+                <li style="margin-bottom: 0;">1. <a href="#chain_of_thought"><strong>Chain-of-Thought Prompting</strong></a>: We propose a novel framework that incorporates a thought process called ImageGen-CoT prior to image generation in T2I-ICL tasks.</li>
+                <li style="margin-bottom: 0;">2. <a href="#ft_dataset"><strong>FT w ImageGen-CoT dataset</strong></a>: We construct high-quality ImageGen-CoT datasets for fine-tuning unified MLLMs through an automatic dataset construction pipeline.</li>
+                <li style="margin-bottom: 0;">3. <a href="#scaling_strategy"><strong>Efficient Scaling Strategy</strong></a>: We explore Best-of-N test-time scaling up paradigms and propose a hybrid scaling approach that first generates multiple ImageGen-CoT chains and then generates multiple image variations per chain.</li>
             </ul>
         </p>
 
-        <p class="text abstract", style="margin-top: 0%;">
-            &#x1F449;<span style="color: blue;"><strong>Key Messages</strong></span> &nbsp;
-            <ul class="text" style="margin-top: 0%; padding-left: 10%;">
-                <li style="margin-bottom: 0;"><strong><i>Generalization observation</i></strong> &nbsp; Perfect in-distribution generalization, failed to generalize in out-of-distribution scenarios, scaling behaviour for combinatorial generalization. </li>
-                <li style="margin-bottom: 0;"><strong><i>Generalization mechanism</i></strong> &nbsp; The models fail to abstract general physical rules and instead exhibit "case-based" generalization behaviour, <i>i.e.</i>, mimicking the closest training example. </li>
-                <li style="margin-bottom: 0;"><strong><i>Generalization priority</i></strong> &nbsp; When generalizing to new cases, models are observed to prioritize different factors when referencing training data: color > size > velocity > shape. </li>
-                <!-- <li><strong><i>Data</i></strong> &nbsp; We develop a 2D simulator with simple geometric shapes (eliminating textures), for unlimited supply of data.</li> -->
-                <!-- <li><strong><i>Model</i></strong> &nbsp; We use standard video generation model without any specific designs and focus on scaling-up. </li> -->
-            </ul>
-
-            <!-- In this work, we evaluate across three key scenarios: in-distribution, out-of-distribution, and combinatorial generalization.
-            We developed a 2D simulation testbed for object movement and collisions to generate videos deterministically governed by one or more classical mechanics laws.
-            This provides an unlimited supply of data for large-scale experimentation and enables quantitative evaluation of whether the generated videos adhere to physical laws.
-            We trained diffusion-based video generation models to predict object movements based on initial frames.
-            Our scaling experiments show perfect generalization within the distribution, measurable scaling behaviour for combinatorial generalization, but failure in out-of-distribution scenarios.
-            Further experiments reveal two key insights about the generalization mechanisms of these models: (1) the models fail to abstract general physical rules and instead exhibit ``case-based'' generalization behaviour, \textit{i.e.}, mimicking the closest training example; (2) when generalizing to new cases, models are observed to prioritize different factors when referencing training data: color $>$ size $>$ velocity $>$ shape.
-            Our study suggests that scaling alone is insufficient for video generation models to uncover fundamental physical laws, despite its role in Sora's broader success. -->
+        <p class="text abstract" style="margin-top: 3%;">
+            <span style="color: blue;"><strong><a href="#validation">Validation</a></strong></span><br>
+            Our method significantly improves SEED-X's performance through progressive enhancements: adding ImageGen-CoT, fine-tuning with the ImageGen-CoT dataset, and applying test-time scaling strategies. Specifically, as shown in <a href="#figure-2">Figure 2</a>, SEED-X FT with ImageGen-CoT improves by 89% and 114% on CoBSAT and DreamBench++. With scaling strategy, it further achieves 0.909 and 0.543 respectively.
         </p>
 
-        <p class="text abstract" style="margin-top: 0%;">
-            <!-- <br><br> -->
-            <h2 class="text">Contents</h2>
-            <ol class="text">
-                <li><strong><a href="#law_discovery">&sect;Physical Law Discovery as Video Generation</a></strong>: Problem definition and categoraization of evaluation</li>
-                <li><strong><a href="#id_and_ood">&sect;In-Distribution and Out-of-Distribution Generalization</a></strong>: We study how in-distribution and out-of-distribution generalization is correlated with model or data scaling.</li>
-                <li><strong><a href="#combo_gen">&sect;Combinatorial Generalization</a></strong>: We investigate the combinatorial generalization abilities of video generation models.</li>
-                <li><strong><a href="#analysis">&sect;Analysis on Generalization behaviour</a></strong>: We investigate the generalization mechanism of a video generation model.</li>
-                <ul>
-                    <li><a href="#inter_and_extra">&sect;Understanding Generalization from Interpolation and Extrapolation.</a></li>
-                    <li><a href="#memo_vs_gen">&sect;Memorization or Generalization.</a></li>
-                    <li><a href="#how_to_knn">&sect;How Does Diffusion Model Retrieve Data?</a></li>
-                    <li><a href="#how_to_combine">&sect;How Does Complex Combinatorial Generalization Happen?</a></li>
-                    <li><a href="#visual_ambiguity">&sect;Is Video Sufficient for Complete Physics Modeling?</a></li>
-                </ul>
-                <li><strong><a href="#open_discussion">&sect;Open Discussion</a></strong>: We aim to trigger more discussion in understanding the ability and limitation of video generation models.</li>
-            </ol>
-        </p>
+        <d-figure id="figure-2">
+            <figure>
+                <img data-zoomable="" draggable="false" src="static/image/teaser_result_new_00.jpg" alt="Explainable Analysis Figure" width="100%">
+                <figcaption>
+                    <strong>Figure 2:</strong> <strong>Performance comparison on CoBSAT and DreamBench++ benchmarks.</strong>
+                </figcaption>
+            </figure>
+        </d-figure>
 
-        <hr>
-        <div class="section" id="twitter">
-            <h1 class="text">Discussions from the Community <button class="collapse-btn" onclick="toggleContent()"> <i class="fa-duotone fa-solid fa-comments"></i> Display / Hide </button></h1>
-            <div class="text collapse" id="twitter_container" style="display: none">
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Curious whether video generation models (like <a href="https://twitter.com/hashtag/SORA?src=hash&amp;ref_src=twsrc%5Etfw">#SORA</a>) qualify as world models?<br><br>We conduct a systematic study to answer this question by investigating whether a video gen model is able to learn physical laws. <br><br>Three are three key messages to take home: <br>1⃣The model generalises… <a href="https://t.co/oWYT2AcRTy">pic.twitter.com/oWYT2AcRTy</a></p>&mdash; Bingyi Kang (@bingyikang) <a href="https://twitter.com/bingyikang/status/1853635009611219019?ref_src=twsrc%5Etfw">November 5, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Not a surprising result.<br>But good that someone tried this out. <a href="https://t.co/0KWsJeaOLy">https://t.co/0KWsJeaOLy</a></p>&mdash; Yann LeCun (@ylecun) <a href="https://twitter.com/ylecun/status/1854022022654767367?ref_src=twsrc%5Etfw">November 6, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Wow. First <a href="https://twitter.com/pmarca?ref_src=twsrc%5Etfw">@pmarca</a> confirms deep learning is hitting a wall, now this, EXACTLY what I have been telling you all since 1998, over and over again.<br><br>The difference between within and out of training space generalization is all.<br><br>Until we solve this, we won’t get to AGI. <a href="https://t.co/KvH14R8Veu">https://t.co/KvH14R8Veu</a></p>&mdash; Gary Marcus (@GaryMarcus) <a href="https://twitter.com/GaryMarcus/status/1854030327301501209?ref_src=twsrc%5Etfw">November 6, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">This is not surprising to me, but I’m glad they did the work to test it. Agents need more inductive bias - eg common sense core from Spelke - , and active data collection from diverse embodied environments to test their causal theories ie. beyond pixel prediction . <a href="https://t.co/ovZhzDQpay">https://t.co/ovZhzDQpay</a></p>&mdash; Kevin Patrick Murphy (@sirbayes) <a href="https://twitter.com/sirbayes/status/1854018182849438078?ref_src=twsrc%5Etfw">November 6, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Really happy to see this study! Always wanted to do something like this myself, if only to support calming words to grad students: current-gen generative models have nothing to do with intelligence, and AI research remains fascinating and unsolved! <a href="https://t.co/D4FI2Wi60P">https://t.co/D4FI2Wi60P</a></p>&mdash; Vincent Sitzmann (@vincesitzmann) <a href="https://twitter.com/vincesitzmann/status/1853735899051299194?ref_src=twsrc%5Etfw">November 5, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Interesting addition to the discussion over whether AI video models are world models.<br><br>But even if that topic doesn’t interest you, this “video abstract” is one of the best examples of summarizing a paper for social media I have seen. <a href="https://t.co/BWdXHk5s9Q">https://t.co/BWdXHk5s9Q</a></p>&mdash; Ethan Mollick (@emollick) <a href="https://twitter.com/emollick/status/1853857842312188012?ref_src=twsrc%5Etfw">November 5, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">While video models can generate stunning visuals, lots more work is needed to really make them effective world models.<br><br>Problems like object persistence, compositionality, action following and accurate physics are all current issues with current models. <a href="https://t.co/Iq0XRcnvIn">https://t.co/Iq0XRcnvIn</a></p>&mdash; Yilun Du (@du_yilun) <a href="https://twitter.com/du_yilun/status/1853792065198436709?ref_src=twsrc%5Etfw">November 5, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="zh" dir="ltr">大家都很好奇，Sora 等视频生成模型训练完全后，是否有会成为世界模型？<br>简单来说，答案是 NO！<br><br>这项研究尝试让视频模型学习物理定律，结果如何呢？<br>- 模型对于分布内数据可以完美地进行泛化，但无法对分布外数据进行泛化<br>- 模型无法抽象出一般规则，而是试图模仿最接近的训练示例。 <br>-… <a href="https://t.co/RkiCcmAb2k">https://t.co/RkiCcmAb2k</a></p>&mdash; orange.ai (@oran_ge) <a href="https://twitter.com/oran_ge/status/1853927295570100229?ref_src=twsrc%5Etfw">November 5, 2024</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>
-        </div>
-
-        <hr>
         <div id="law_discovery" class="section">
-            <h1 class="text">Physical Law Discovery as Video Generation</h1>
-
-            <h5 class="text">Problem Definition</h5>
-            <p class="text">
-                We aim to establish the framework and define the concept of physical laws discovery in the context of video generation.
-                In classical physics, laws are articulated through mathematical equations that predict future state and dynamics from initial conditions.
-                In the realm of video-based observations, each frame represents a moment in time, and the prediction of physical laws corresponds to 
-                generating future frames conditioned on past states. 
-                <br><br>
-
-                Consider a physical procedure which involves several latent variables $\boldsymbol{z}=(z_1,z_2,\ldots,z_k) \in \mathcal{Z} \subseteq \mathbb{R}^k$, 
-                each standing for a certain physical parameter such as velocity or position. By classical mechanics, these latent variables will evolve by differential 
-                equation $\dot{\boldsymbol{z}}=F(\boldsymbol{z})$. In discrete version, if time gap between two consecutive frames is $\delta$, then we have 
-                $\boldsymbol{z}_{t+1} \approx \boldsymbol{z}_{t} + \delta F(\boldsymbol{z}_t)$. Denote rendering function as 
-                $R(\cdot): \mathcal{Z}\mapsto \mathbb{R}^{3\times H \times W}$ which render the state of the world into an image of shape $H\times W$ with RGB channels.
-                Consider a video \( V = \{I_1, I_2, \ldots, I_L\} \) consisting of \( L \) frames that follows the classical mechanics dynamics. The physical coherence 
-                requires that there exists a series of latent variables which satisfy following requirements:
-                $$ \boldsymbol{z}_{t+1} = \boldsymbol{z}_{t} + \delta F(\boldsymbol{z}_t), t=1,\ldots,L-1. $$
-                $$ I_t = R(\boldsymbol{z}_t), \quad t=1,\ldots, L. $$
-                We train a video generation model \( p \) parametried by \( \theta \), where \( p_{\theta}(I_1, I_2, \ldots, I_L )\) characterizes its understanding of 
-                video frames. <strong>We can predict the subsequent frames by sampling from \( p_{\theta}(I_{c+1}', \ldots I_L' \mid I_1, \ldots, I_c) \) based on initial frames' 
-                condition.</strong> The variable $c$ usually takes the value of 1 or 3 depends on tasks. Therefore, physical-coherence loss can be simply defined as 
-                $-\log p_{\theta}(I_{c+1}, \ldots, I_L \mid I_1, \ldots, I_c) $. It measures how likely the predicted value will cater to the real world development. 
-                The model must understand the underlying physical process to accurately forecast subsequent frames, which we can quantatively evaluate whether video 
-                generation model correctly discover and simulate the physical laws.
-            </p>
-
-            <h5 class="text">On the Verification of Learned Laws</h5>
+            <h1 class="text">Method</h1>
 
             <p class="text">
-                Suppose we have a video generation model learned based on the above formulation. How do we determine if the underlying physical law has been discovered? 
-                A well-established law describes the behaviour of the natural world, <i>e.g.</i>, how objects move and interact. Therefore, a video model incorporating 
-                true physical laws should be able to withstand experimental verification, producing reasonable predictions under any circumstances, which demonstrates 
-                the model's generalization ability. To comprehensively evaluate this, we consider the following categorization of generalization 
-                (see <a href="#fig-cat_of_gen">Figure 1</a>) within the scope of this paper:
-                
-                <d-figure id="fig-cat_of_gen">
-                    <figure style="text-align: center;">
-                        <img data-zoomable="" draggable="false" src="static/image/cat_of_gen.png" alt="benchmark category" style="width: 80%">
-                        <figcaption>
-                            <strong>Figure 1:</strong> Categorization of generalization patterns. &#x25EF; denotes training data. &#x2715; denotes testing data.
-                        </figcaption>
-                    </figure>
-                </d-figure>
-                
-                <ul class="text">
-                    <li>
-                        <strong><i>In-Distribution (ID)</i></strong> generalization: It describes the setting where training data and testing data are from the same distribution.
-                        In our case, both training and testing data follow the same law and are located in the same domain.
-                    </li>
-                    <li>
-                        <strong><i>Out-of-Distribution (OOD)</i></strong> generalization: A human who has learned a physical law can easily extrapolate to scenarios that have never been observed before.
-                        This ability is referred to as out-of-distribution generalization. Although it sounds challenging, this evaluation is necessary as it indicates whether a model can learn principled rules from data.
-                    </li>
-                    <li>
-                        <strong><i>Combinatorial</i></strong> generalization: There is a situation between ID and OOD, which has more practical value. We call this combinatorial generalization,
-                        representing scenarios where every "concept" or object has been observed during training, but not their every combination. It examines a model's ability to effectively 
-                        combine relevant information from past experiences in novel ways. A similar concept has been explored in LLMs<d-cite key="riveland2024natural"></d-cite>, which demonstrated that models 
-                        can excel at linguistic instructing tasks by recombining previously learned components, without task-specific experience.</li>
-                </ul>
+                In this section, we present our ImageGen-CoT framework in detail. First, we introduce the formulation of ImageGen-CoT (<a href="#Formulation_of_ImageGen-CoT"><strong>Formulation of ImageGen-CoT</strong></a>). Second, we describe our automated pipeline for collecting high-quality ImageGen-CoT datasets (<a href="#Dataset_Construction"><strong>Dataset Construction</strong></a>). Third, we explore various strategies to enhance model performance during inference, culminating in a novel hybrid scaling approach that addresses both contextual comprehension and generation challenges (<a href="#Scaling_Strategy"><strong>Scaling Strategy</strong></a>).
             </p>
 
+            <d-figure id="figure-3">
+                <figure>
+                    <img data-zoomable="" draggable="false" src="static/image/MSR_Main_paper_00.jpg" alt="Explainable Analysis Figure" width="100%">
+                    <figcaption>
+                        <strong>Figure 3:</strong> <strong>Main Pipeline. (a) Data Collection Pipeline (b) Training Pipeline (c) Test-Time Scaling</strong>
+                    </figcaption>
+                </figure>
+            </d-figure>
+            
+            <h3 id="Formulation_of_ImageGen-CoT" class="text">Formulation of ImageGen-CoT</h3>
+
+            <p class="text">
+                As described above, T2I-ICL tasks require models to have a high level of comprehension. To enhance the model's capacity, we propose a new framework that generates a Chain-of-Thought, which we call ImageGen-CoT, before performing ImageGen. While we initially expected models to simultaneously output both ImageGen-CoT reasoning chains and corresponding images in a single forward pass.
+            </p>
+
+            <p class="text">
+                However, during our practice, we observe that models frequently fail to generate images even when explicitly prompted to first generate ImageGen-CoT followed by image output. As illustrated in <a href="#figure-3">Figure 3</a>, to ensure reliable image generation, we develop a two-stage inference protocol. The first stage involves prompting the model to generate the ImageGen-CoT reasoning chain R. In the second stage, we combine the original input X with the generated ImageGen-CoT R, along with a mandatory image generation token ⟨image⟩, to guarantee the production of the target image I. This process can be formally expressed as:
+            </p>
+
+            <p class="text">
+            \begin{equation}
+            \begin{aligned}
+            & Stage 1: R = \mathcal{M}(X \oplus instruction) \\
+            & Stage 2: I = \mathcal{M}(X \oplus R \oplus \langle image \rangle)
+            \end{aligned}
+            \end{equation}
+            </p>
+
+            <p class="text">
+                where $\mathcal{M}$ denotes the unified MLLMs, and $\oplus$ represents the concatenation operation.
+            </p>
+
+            <h3 id="Dataset_Construction" class="text">Dataset Construction</h3>
+
+            <p class="text">
+                To collect high-quality ImageGen-CoT datasets, we first establish an instruction pool by collecting instructions from existing training datasets in T2I-ICL tasks. Second, we propose an automatic dataset construction pipeline. In the initial stage, we let MLLM act as a <strong>Generator</strong> to generate N outputs, each consisting of an ImageGen-CoT and a prompt for the next image, which are then used by T2I-Model to generate N images. Then, MLLM acts as a <strong>Selector</strong> to select the best image from the N candidates. After that, if the selected image meets our quality threshold or reaches the maximum iteration limit, the pipeline terminates and outputs the corresponding ImageGen-CoT and image pair. Otherwise, we let MLLM act as a <strong>Critic</strong> to write a critique of the selected image, assessing how well it matches the T2I-ICL prompt. Finally, MLLM acts as a <strong>Refiner</strong> to refine the prompt based on the critique, and the process iterates until meeting the termination.
+            </p>
+
+            <h3 id="Scaling_Strategy" class="text">Scaling Strategy</h3>
+
+            <p class="text">
+                Though fine-tuning with the ImageGen-CoT dataset significantly improves model performance in T2I-ICL tasks, substantial room for improvement remains. Inspired by test-time scaling methods in NLP, we explore whether increasing computational investment during inference can further enhance performance. We first investigate a conventional paradigm: using SEED-X as the base model, generating multiple images by varying the seed value, and outputs are filtered via a ground-truth verifier aligned with the Pass@N metric. However, we observe that even with N=16, this approach underperforms compared to SEED-X fine-tuned with ImageGen-CoT Dataset.
+            </p>
+
+            <p class="text">
+                This observation motivates our exploration of test-time scaling in the context of ImageGen-CoT, which we approach through three distinct strategies:
+            </p>
+
+            <ol class="text">
+                <li><strong>Single-Chain Scaling:</strong> This approach generates one ImageGen-CoT chain and produces multiple image variants by varying the seed values.</li>
+                
+                <li><strong>Multi-Chain Scaling:</strong> Similar to NLP's "Best-of-N" sampling, we generate multiple ImageGen-CoT chains through high-temperature LLM decoding. Each chain produces a unique image, potentially capturing different aspects of the contextual requirements.</li>
+                
+                <li><strong>Hybrid Scaling:</strong> Regarding the dual challenges of contextual comprehension and generation in T2I-ICL tasks, we propose a hybrid approach that combines the strengths of both strategies. As illustrated in <a href="#figure-3">Figure 3</a>, this method first generates multiple ImageGen-CoT chains and then creates multiple image variations for each chain.</li>
+            </ol>
+
+            
         </div>
 
-
-        <hr>
-
-        <div id="id_and_ood" class="section">
-            <h1 class="text">In-Distribution and Out-of-Distribution Generalization</h1>
+        <div id="law_discovery" class="section">
+            <h1 class="text">Validation</h1>
 
             <p class="text">
-                We focus on deterministic tasks governed by basic kinematic equations, as they allow clear definitions of ID/OOD and straightforward quantitative error evaluation.
+                In this section, we seek to answer the following questions: a) How much the ImageGen-CoT improves model's performance (via prompting)? b) To what extent does the performance of the model improve after fine-tuning with the ImageGen-CoT dataset? c) Can we invest more time in inference time to improve the performance? Finally, to better demonstrate the effectiveness of our method, we present visible comparison results.
             </p>
 
-            <h5 class="text">Fundamental Physical Scenarios</h5>
-
-            <d-figure id="fig-data_demo">
-                <figure style="text-align: center;">
-                    <video  poster="" autoplay controls muted loop playsinline width="100%">
-                        <source src="static/video/demo_1x6.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 2:</strong> Video visualization. From left to right: uniform linear motion, perfectly elastic collision and parabolic motion.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <ul class="text">
-                <li>
-                    Uniform Linear Motion: A ball moves horizontally with a constant velocity. This is used to illustrate the <i>law of Inertia</i>. 
-                </li>
-                <li>
-                    Perfectly Elastic Collision: Two balls with different sizes and speeds move horizontally toward each other and collide. The underlying physical law is 
-                    <i>the conservation of energy and momentum</i>. 
-                </li>
-                <li>
-                    Parabolic Motion: A ball with a initial horizontal velocity falls due to gravity. This represents <i>Newton's second law of motion</i>. Each motion is determined by its initial frames. 
-                </li>
-            </ul>
-
-            <h5 class="text">Results of Scaling the Data and Model</h5>
+            <h3 id="prompting_effect" class="text">Effect of ImageGen-CoT Prompting</h3>
 
             <p class="text">
-                
-                <d-figure id="fig-scaling_idood">
-                    <figure style="text-align: center;">
-                        <img data-zoomable="" draggable="false" src="static/image/scaling_combined.png" alt="benchmark category" style="width: 100%">
-                        <figcaption>
-                            <strong>Figure 3:</strong> The error in the velocity of balls between the ground truth state in the simulator and the values parsed
-                            from the generated video by the diffusion model, given the first 3 frames
-                        </figcaption>
-                    </figure>
-                </d-figure>
-                
-                <p class="text">
-                    <strong>In-Distribution (ID) Generalization</strong>. As in <a href="#fig-scaling_idood">Figure 3</a>, increasing the model size (DiT-S to DiT-L) or the data amount (30K to 3M) consistently 
-                    decreases the <i>velocity error</i> across all three tasks, strongly evidencing the importance of scaling for ID generalization. 
-                    Take the uniform motion task as an example: the DiT-S model has a velocity error of $0.022$ with 30K data, while DiT-L achieves an error of $0.012$ with 3M data, 
-                    very close to the error of $0.010$ obtained with ground truth video. 
-                </p>
-
-                <p class="text">
-                    <strong>Out-of-Distribution (OOD) Generalization</strong>. The results differ significantly.
-                    <ul class="text">
-                        <li><i><strong>First, OOD velocity errors are an order of magnitude higher than ID errors in all settings.</strong></i> 
-                        For example, the OOD error for the DiT-L model on uniform motion with 3M data is $0.427$, while the ID error is just $0.012$. </li>
-                        <li><i><strong>Second, scaling up the training data and model size has little or negative impact on reducing this prediction error.</strong></i> 
-                        The variation in velocity error is higly random as data or model size changes, <i>e.g.,</i>, the error for DiT-B on uniform 
-                        motion is $0.433$, $0.328$ and $0.358$, with data amounts of  30K, 300K and 3M. </li>
-                    </ul>
-                
-                    <p class="text">
-                        We also trained DiT-XL on the uniform motion 3M dataset but observed no improvement in OOD generalization.  As a result, we 
-                        did not pursue training of DiT-XL on other scenarios or datasets constrained by resources.
-                        These findings suggest the inability of scaling to perform reasoning in OOD scenarios. The sharp difference between ID and OOD 
-                        settings further motivates us to study the generalization mechanism of video generation in <a href="memo_vs_gen">Section 4.1</a>.
-                    </p>
-                </p>
+                As shown in <strong><a href="#table-1">Table 1</a></strong> and <strong><a href="#table-2">Table 2</a></strong>, integrating ImageGen-CoT through prompting yields consistent improvements across benchmarks. On CoBSAT, SEED-LLaMA's average score improves from 0.254 to 0.283 (+11.4% relative gain), while SEED-X shows a more substantial improvement from 0.349 to 0.439 (+25.8%). The trend persists on Dreambench++, where SEED-X achieves a 84.6% relative improvement (0.188 → 0.347) compared to its baseline. These results highlight the effectiveness of incorporating ImageGen-CoT in enhancing model performance.
             </p>
 
-            <h5 class="text">Examples</h5>
-            <d-figure id="fig-simple_gen_cases">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="48%">
-                        <source src="static/video/simple_success_cases.mp4" type="video/mp4">
-                    </video>
-                    &nbsp;
-                    <video  poster=""  id="ade" autoplay controls muted loop width="48%">
-                        <source src="static/video/simple_failure_cases.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 4:</strong> Generated example videos. The first row the is ground-truth video, while the second row is generated by our model.
-                         Left: successful cases from ID generalization. Right: failure cases from OOD generalization.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-        </div>
-
-        <hr>
-
-
-        <div id="combo_gen" class="section">
-            <h1 class="text">Combinatorial Generalization</h1>
-
-            <p class="text">
-                It is understandable that video generation models failed to reason in OOD scenarios, since it is very difficult for humans 
-                to derive precise physical laws from data. 
-                For example, it took scientists centuries to formulate Newton's three laws of motion.
-                However, even a child can intuitively predict outcomes in everyday situations by combining elements from past experiences. 
-                In this section, we evaluate the combinatorial generalization abilities of diffusion-based video models.
-            </p>
-
-            <h5 class="text">Combinatorial Physical Scenarios</h5>
-            <d-figure id="fig-phyre_demo">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="75%">
-                        <source src="static/video/phyre_demo_2x4.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 5:</strong> Downsampled video visualization. The arrow indicates the progression of time.
-                    </figcaption>
-                </figure>
-            </d-figure>
-                                <!-- <img data-zoomable="" draggable="false" src="static/image/phyre_demo.png" alt="benchmark category" style="width: 50%"> -->
-
-
-            <p class="text">
-                <strong>Environment and task</strong>&nbsp; We selected the PHYRE simulator<d-cite key="bakhtin2019phyre"></d-cite> as our testbed—a 2D environment involves 
-                multiple objects to free fall then collide with each other, forming complex physical interactions. 
-                It features diverse object types, including balls, jars, bars, and walls, which can be either fixed or dynamic. 
-                This enables complex interactions such as collisions, parabolic trajectories, rotations, and friction to occur simultaneously within a video.
-                Despite this complexity, the underlying physical laws are deterministic, allowing the model to learn the laws and predict unseen scenarios.
-
-                <br><br>
-                <strong>Data</strong>&nbsp; There are eight types of objects considered, including two dynamic gray balls, a group of fixed black balls, a fixed black bar, a dynamic bar, a group of dynamic standing bars, a dynamic jar, and a dynamic standing stick. 
-                Each task contains one red ball and four randomly chonsen objects from the eight types, resulting in \( C^4_8 = 70 \) unique templates. See <a href="#fig-phyre_demo">Figure 5</a> for examples. 
-                For each training template, we reserve a small set of videos to create the <i>in-template</i> evaluation set. Additionally, 10 unused templates are reserved for the <i>out-of-template</i> evaluation set to assess the model’s ability to generalize to new combinations not seen during training.
-
-                <br><br>
-                <strong>Model</strong> Given the complexity of the task, we adopt the 256$\times$256 resolution and train the model for more iterations (1 million steps).
-                    Consequently, we are unable to conduct a comprehensive sweep of all data and model size combinations as before. Therefore, we mainly focus on the largest model,
-                    DiT-XL, to study data scaling behaviour for combinatorial generalization.
-            </p>
-
-            <h5 class="text">Results of Scaling the Data and Model</h5>
-
-            <p class="text">
-                <div id="tab:data_ratio_result" style="display: flex; flex-direction: column; align-items: center; text-align: center;"></div>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center;">Model</th>
-                                    <th style="text-align: center;">#Template</th>
-                                    <th style="text-align: center;">FVD(&darr;)</th>
-                                    <th style="text-align: center;">SSIM(&uarr;)</th>
-                                    <th style="text-align: center;">PSNR(&uarr;)</th>
-                                    <th style="text-align: center;">LPIPS(&darr;)</th>
-                                    <th style="text-align: center;">Abnormal Ratio(&darr;)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>DiT-XL</td>
-                                    <td>6</td>
-                                    <td>18.2 / 22.1</td>
-                                    <td><strong>0.973</strong> / 0.943</td>
-                                    <td><strong>32.8</strong> / 25.5</td>
-                                    <td><strong>0.028</strong> / 0.082</td>
-                                    <td>3% / 67%</td>
-                                </tr>
-                                <tr>
-                                    <td>DiT-XL</td>
-                                    <td>30</td>
-                                    <td>19.5 / 19.7</td>
-                                    <td>0.973 / 0.950</td>
-                                    <td>32.7 / 27.1</td>
-                                    <td>0.028 / 0.065</td>
-                                    <td>3% / 18%</td>
-                                </tr>
-                                <tr>
-                                    <td>DiT-XL</td>
-                                    <td>60</td>
-                                    <td class="highlight">17.6 / 18.7</td>
-                                    <td class="highlight">0.972 / 0.951</td>
-                                    <td class="highlight">32.4 / 27.3</td>
-                                    <td class="highlight">0.035 / 0.062</td>
-                                    <td class="highlight">2% / 10%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                      </div>
-                    <figcaption style="text-align: center; width: 100%;">
-                        Table 1: Combinatorial generalization results. The results are presented in the format of <i>{in-template result} / {out-of-template result}.</i>
-                    </figcaption>
+            <div id="tab:model_ensemble" style="display: flex; flex-direction: column; align-items: center;">
+                <div class="table-container">
+                    <table class="data-table">
+                        <caption style="caption-side: top; text-align: left; margin-bottom: 10px;">
+                            <strong>Table 1: Main results on CoBSAT benchmark.</strong>
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Method</th>
+                                <th colspan="5">Object-Inference Task</th>
+                                <th colspan="5">Attribute-Inference Task</th>
+                                <th rowspan="2">Avg.↑</th>
+                            </tr>
+                            <tr>
+                                <th>Color-I</th>
+                                <th>Bkg-I</th>
+                                <th>Style-I</th>
+                                <th>Action-I</th>
+                                <th>Texture-I</th>
+                                <th>Color-II</th>
+                                <th>Bkg-II</th>
+                                <th>Style-II</th>
+                                <th>Action-II</th>
+                                <th>Texture-II</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SEED-LLaMA</td>
+                                <td>.616</td>
+                                <td>.216</td>
+                                <td>.272</td>
+                                <td>.592</td>
+                                <td>.112</td>
+                                <td>.088</td>
+                                <td>.168</td>
+                                <td>.192</td>
+                                <td>.220</td>
+                                <td>.056</td>
+                                <td>.254</td>
+                            </tr>
+                            <tr>
+                                <td>+ ImageGen-CoT (via Prompt)</td>
+                                <td>.700</td>
+                                <td>.276</td>
+                                <td>.300</td>
+                                <td>.408</td>
+                                <td>.084</td>
+                                <td>.176</td>
+                                <td>.292</td>
+                                <td>.272</td>
+                                <td>.192</td>
+                                <td>.132</td>
+                                <td>.283</td>
+                            </tr>
+                            <tr>
+                                <td>+ FT w/ GT Image</td>
+                                <td>.632</td>
+                                <td>.272</td>
+                                <td>.352</td>
+                                <td>.540</td>
+                                <td>.128</td>
+                                <td>.164</td>
+                                <td>.200</td>
+                                <td>.256</td>
+                                <td>.172</td>
+                                <td>.112</td>
+                                <td>.283</td>
+                            </tr>
+                            <tr style="background-color: #e6f3ff;">
+                                <td>+ FT w/ ImageGen-CoT Dataset</td>
+                                <td>.620</td>
+                                <td>.368</td>
+                                <td>.384</td>
+                                <td>.424</td>
+                                <td>.060</td>
+                                <td>.192</td>
+                                <td>.288</td>
+                                <td>.208</td>
+                                <td>.216</td>
+                                <td>.148</td>
+                                <td>.291 <span style="color: red;">(↑14.6%)</span></td>
+                            </tr>
+                            <tr>
+                                <td>SEED-X</td>
+                                <td>.796</td>
+                                <td>.412</td>
+                                <td>.316</td>
+                                <td>.596</td>
+                                <td>.240</td>
+                                <td>.176</td>
+                                <td>.344</td>
+                                <td>.260</td>
+                                <td>.252</td>
+                                <td>.104</td>
+                                <td>.349</td>
+                            </tr>
+                            <tr>
+                                <td>+ ImageGen-CoT (via Prompt)</td>
+                                <td>.724</td>
+                                <td>.440</td>
+                                <td>.660</td>
+                                <td>.784</td>
+                                <td>.216</td>
+                                <td>.312</td>
+                                <td>.472</td>
+                                <td>.228</td>
+                                <td>.320</td>
+                                <td>.240</td>
+                                <td>.439</td>
+                            </tr>
+                            <tr>
+                                <td>+ FT w/ GT Image</td>
+                                <td>.936</td>
+                                <td>.712</td>
+                                <td>.896</td>
+                                <td>.860</td>
+                                <td>.468</td>
+                                <td>.280</td>
+                                <td>.324</td>
+                                <td>.388</td>
+                                <td>.636</td>
+                                <td>.424</td>
+                                <td>.592</td>
+                            </tr>
+                            <tr style="background-color: #e6f3ff;">
+                                <td>+ FT w/ ImageGen-CoT Dataset</td>
+                                <td>.884</td>
+                                <td>.692</td>
+                                <td>.928</td>
+                                <td>.936</td>
+                                <td>.420</td>
+                                <td>.504</td>
+                                <td>.612</td>
+                                <td>.660</td>
+                                <td>.524</td>
+                                <td>.424</td>
+                                <td>.658 <span style="color: red;">(↑88.5%)</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            </p>
+            </div>
+
+            <h3 id="finetuning_effect" class="text">Impact of Fine-tuning with ImageGen-CoT Dataset</h3>
 
             <p class="text">
-                    
-                As shown in <a href="tab:data_ratio_result">Table 1</a>, when the number of templates increases from 6 to 60, all metrics improve on the out-of-template testing sets.
-                Notably, the abnormal rate for human evaluation significantly reduces from 67% to 10%. Conversely, the model trained with 
-                6 templates achieves the best SSIM, PSNR, and LPIPS scores on the in-template testing set. This can be explained by the 
-                fact that each training example in the 6-template set is exposed ten times more frequently than those in the 60-template set,
-                allowing it to better fit the in-template tasks associated with template 6.
-               Furthermore, we conducted an additional experiment using a DiT-B model on the full 60 templates to verify the importance of model scaling.
-               As expected, the abnormal rate increases to 24%. These results suggest that both model capacity and coverage of the combination space are 
-               crucial for combinatorial generalization. This insight implies that scaling laws for video generation should focus on increasing combination diversity,
-                rather than merely scaling up data volume. 
-           </p>
+                As shown in <strong><a href="#table-1">Table 1</a></strong>, SEED-LLaMA and SEED-X fine-tuned with ImageGen-CoT Dataset achieve improvements of +2.8% (0.283 → 0.291) and +49.9% (0.439 → 0.658), compared to generating ImageGen-CoT via prompting, respectively. What's more, they even outperform themselves fine-tuned with GT Images by +2.8% (0.283 → 0.291) and +11.1% (0.592 → 0.658). Additionally, on the Dreambench++ benchmark, SEED-LLaMA fine-tuned with ImageGen-CoT Dataset shows an improvement of +29.5% (0.078 → 0.101) in CP·PF score, while SEED-X achieves a +16.1% gain (0.347 → 0.403). These strong results on COBSAT and Dreambench++ underscore the effectiveness and generalizability of our collected ImageGen-CoT dataset in enhancing model reasoning and understanding abilities.
+            </p>
 
-            <p class="text"><strong>Examples</strong></p>
-            <d-figure id="fig-phyre_gen_cases">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="100%">
-                        <source src="static/video/phyre_scene_concat_case1.mp4" type="video/mp4">
-                    </video>
+            <div id="tab:model_ensemble" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 30px;">
+                <div class="table-container">
+                    <table class="data-table">
+                        <caption style="caption-side: top; text-align: left; margin-bottom: 10px;">
+                            <strong>Table 2: Evaluation results on Dreambench++ benchmark.</strong>
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Method</th>
+                                <th colspan="5">Concept Preservation</th>
+                                <th colspan="4">Prompt Following</th>
+                                <th rowspan="2">CP·PF↑</th>
+                            </tr>
+                            <tr>
+                                <th>Animal</th>
+                                <th>Human</th>
+                                <th>Object</th>
+                                <th>Style</th>
+                                <th>Overall</th>
+                                <th>Photorealistic</th>
+                                <th>Style</th>
+                                <th>Imaginative</th>
+                                <th>Overall</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SEED-LLaMA</td>
+                                <td>.436</td>
+                                <td>.315</td>
+                                <td>.288</td>
+                                <td>.381</td>
+                                <td>.358</td>
+                                <td>.306</td>
+                                <td>.202</td>
+                                <td>.154</td>
+                                <td>.218</td>
+                                <td>.078</td>
+                            </tr>
+                            <tr>
+                                <td>+ ImageGen-CoT (via Prompt)</td>
+                                <td>.390</td>
+                                <td>.241</td>
+                                <td>.262</td>
+                                <td>.346</td>
+                                <td>.317</td>
+                                <td>.291</td>
+                                <td>.211</td>
+                                <td>.170</td>
+                                <td>.222</td>
+                                <td>.078</td>
+                            </tr>
+                            <tr style="background-color: #e6f3ff;">
+                                <td>+ FT w/ ImageGen-CoT Dataset</td>
+                                <td>.399</td>
+                                <td>.290</td>
+                                <td>.271</td>
+                                <td>.318</td>
+                                <td>.325</td>
+                                <td>.348</td>
+                                <td>.355</td>
+                                <td>.210</td>
+                                <td>.310</td>
+                                <td>.101 <span style="color: red;">(↑29.5%)</span></td>
+                            </tr>
+                            <tr>
+                                <td>SEED-X</td>
+                                <td>.647</td>
+                                <td>.420</td>
+                                <td>.526</td>
+                                <td>.571</td>
+                                <td>.559</td>
+                                <td>.346</td>
+                                <td>.342</td>
+                                <td>.303</td>
+                                <td>.337</td>
+                                <td>.188</td>
+                            </tr>
+                            <tr>
+                                <td>+ ImageGen-CoT (via Prompt)</td>
+                                <td>.547</td>
+                                <td>.293</td>
+                                <td>.369</td>
+                                <td>.424</td>
+                                <td>.427</td>
+                                <td>.862</td>
+                                <td>.775</td>
+                                <td>.737</td>
+                                <td>.817</td>
+                                <td>.347</td>
+                            </tr>
+                            <tr style="background-color: #e6f3ff;">
+                                <td>+ FT w/ ImageGen-CoT Dataset</td>
+                                <td>.549</td>
+                                <td>.410</td>
+                                <td>.403</td>
+                                <td>.432</td>
+                                <td>.458</td>
+                                <td>.922</td>
+                                <td>.851</td>
+                                <td>.846</td>
+                                <td>.881</td>
+                                <td>.403 <span style="color: red;">(↑114.4%)</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h3 id="scaling_effect" class="text">Benefits of Test-time Scaling Strategy</h3>
+
+            <p class="text">
+                As shown in <strong><a href="#figure-4">Figure 4</a></strong>, our experiments reveal three key insights. First, the Vanilla SEED-X@16 baseline (0.67 on CobSAT, 0.312 on Dreambench++) underperforms even the simplest scaling strategies (e.g., 0.747 on CobSAT@2), highlighting the necessity of ImageGen-CoT integration. Second, Multi-Chain Scaling matches Single-Chain Scaling in performance, proving that generating diverse reasoning paths is as effective as varying outputs from a single chain. Finally, Hybrid Scaling consistently achieves the highest scores across benchmarks. At N=16, Hybrid Scaling improves CobSAT performance to 0.909 (1.9% over Single-Chain) and Dreambench++ to 0.543 (0.8% higher than Single-Chain). The integration of ImageGen-CoT enables effective bidirectional scaling across both comprehension and generation dimensions. This dual-axis scalability suggests new pathways for optimizing MLLM performance in complex multimodal tasks.
+            </p>
+
+            <d-figure id="figure-4">
+                <figure>
+                    <img data-zoomable="" draggable="false" src="static/image/Scaleup_exp_00.jpg" alt="Explainable Analysis Figure" width="100%">
                     <figcaption>
-                        <strong>Figure 6:</strong> Generated sample videos. First row: ground gruth. Second Row: the model learned with 60 templates.
-                        Thrid row: the model learned with 30 templates. Forth row: the model learned with 6 templates.
+                        <strong>Figure 4:</strong> <strong>Test-time scaling strategies comparison.</strong> We conducted a comprehensive evaluation of three distinct scaling strategies: Multi-Chain Scaling, Single-Chain Scaling, and Hybrid Scaling.
                     </figcaption>
                 </figure>
             </d-figure>
-        </div>
-
-        <hr>
-
-        <div id="analysis" class="section">
-            <h1 class="text">Analysis on The Generalization Behaviour</h1>
-
-        </div>
-        <div id="inter_and_extra" class="section">
-        
-            <h2 class="text">Understanding Generalization from Interpolation and Extrapolation</h2>
-
-
-            <p class="text">
-                The generalization ability of a model roots from its interpolation and extrapolation capability<d-cite key="xu2020neural,balestriero2021learning"></d-cite>.
-                Therefore, we design experiments to explore the limits of these abilities for a video generation model. 
-                
-                <br><br>
-                <strong>Experimental Design</strong>&nbsp; We design datasets which delibrately leave out some latent values, i.e. velocity. After training, we test model's 
-                prediction on both seen and unseen scenarios. We mainly focus on uniform motion and collision processes. For uniform motion, 
-                we create a series of training sets, where a certain range of velocity is absent. For collsion, it has multiple variables. 
-                we exclude one or more square regions from the training set of initial velocities for two balls and then assess the velocity prediction error after the collision.
-                <br><br>
-
-            </p>
-
-            <d-figure id="fig-uniform_motion_squareout">
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/uniform_motion_square_out_totalv2.png" alt="benchmark category" style="width: 100%">
-                    <figcaption>
-                        <strong>Figure 7:</strong> Uniform motion video generation. Models are trained on datasets with a missing middle velocity range.  
-                        For example, in the first figure, training velocities cover \( [1.0, 1.25] \) and \( [3.75, 4.0] \), excluding the middle range.  
-                        When evaluated with velocity condition from the missing range \( [1.25, 3.75] \), the generated velocity tends to shift away from the initial condition, breaking the Law of Inertia.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-
-            <p class="text">
-                <strong>Uniform Motion</strong> 
-                As shown in <a href="#fig-uniform_motion_squareout">Figure 7</a>, the OOD accuracy is closely related to the size of gap.
-                The larger the gap, the larger the OOD error ((1)-(3)). When the gap is reduced, the model correctly interpolates for most of OOD data. 
-                Moreover, when part the missing range is reintroduced, the model exhibits strong interpolation abilities ((4)-(5)). 
-            </p>
-
-            <d-figure id="fig-collision_squareout"></d-figure>
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/collision_squareout.png" alt="benchmark category" style="width: 100%">
-                    <figcaption>
-                        <strong>Figure 8:</strong> Collision video generation. Models are trained on the <a style="color: wheat;">yellow</a> region and evaluated on data points in both the <a style="color: wheat;">yellow</a> (ID) and <a style="color: lightcoral;">red</a> (OOD) regions. When the OOD range is surrounded by the training region, the OOD generalization error remains relatively small and comparable to the ID error.                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <p class="text">
-                <strong>Collision</strong>&nbsp;
-                As shown in <a href="#fig-collision_squareout">Figure 8</a>,
-                for the OOD velocity combinations that lie within the convex hull of the training set, <i>i.e.</i>, the internal red squares in the yellow region, 
-                the model generalizes well, even when the hole is very large ((3)). However, the model experiences large errors when the latent values lies in exterior space of training set's convex hull.
-
-            </p>
-
-            <p class="text">
-                <strong>Conclusion</strong>&nbsp;
-                <a style="color: red;">The model exhibits <strong><i>strong interpolation abilities</i></strong>, even when the data are extremely sparse. </a>
-            </p>
-        </div>
-
-        <div id="memo_vs_gen" class="section"></div>
-        
-            <h2 class="text">Memorization or Generalization</h2>
-
-
-            <p class="text">
-                Previous work<d-cite key="hu2024case"></d-cite> indicates that LLMs rely on memorization, reproducing training cases during inference instead of 
-                learning the underlying rules for tasks like addition arithmetic. We investigate whether video generation models display similar behaviour, memorizing data rather than understanding physical laws.
-
-                <br><br>
-                <strong>Experimental Design</strong>&nbsp;
-                We train our model on uniform motion videos with velocities \(v \in [2.5, 4.0]\), using the first three frames as input conditions. 
-                Two training sets are used:  <i>Set-1</i> only contains balls moving from left to right, while <i>Set-2</i> includes movement in 
-                both direction, by using horizontal flipping at training time. 
-                At evaluation, we focus on low-speed balls ($v\in[1.0, 2.5]$), which were not present in the training data.
-            </p>
-
-            <d-figure id="fig-case_based">
-                <figure style="text-align: center; vertical-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/case-based1.png" alt="benchmark category" style="width: 40%">
-                    <figcaption>
-                        <strong>Figure 9:</strong> The example of uniform motion illustrating memorization.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <p class="text">
-                <strong>Results</strong>&nbsp;
-                As shown in <a href="#fig-case_based">Figure 9</a>, the <i>Set-1</i> model generates videos with only positive velocities, 
-                biased toward the high-speed range. In contrast, the <i>Set-2</i> model occasionally produces videos with negative velocities,
-                as highlighted by the green circle. For instance, a low-speed ball moving from left to right may suddenly reverse direction after
-                its condition frames. This could occur since the model identifies reversed training videos as the closest match for low-speed balls. 
-                <strong><i>
-                This distinction between the two models suggests that the video generation model is influenced by “deceptive” examples in the 
-                training data. Rather than abstracting universal rules, the model appears to rely on memorization, and case-based imitation for OOD 
-                generalization. 
-                </i></strong>
-            </p>
-
-            <h5 class="text">Examples</h5>
-            <d-figure id="fig-case_based_gen_samples">
-                <figure style="text-align: center; vertical-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="40%" >
-                        <source src="static/video/velocity_flip.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 10:</strong> Generated example videos. The first row the is ground-truth video, while the second row is generated by our model.
-                        A low-velocity ball might reverse it direction right after its initial frames.
-                    </figcaption>
-                </figure>
-            </d-figure>
-        </div>
-
-        <div id="how_to_knn" class="section"></div>
-        
-            <h2 class="text">How Does Diffusion Model Retrieve Data?</h2>
-
-
-            <p class="text">
-                We aim to investigate the ways a video model performs <i>case matching</i>—identifying close training examples for a given input. 
-
-                <br><br>
-                <strong>Experimental Design</strong> We use <i>uniform linear motion</i> for this study. 
-                Specifically, we compare four attributes, <i>i.e.</i>, color, shape, size, and velocity, in a pairwise manner. 
-                In other words, <strong>we build an </strong>
-                Through comparisons, we seek to determine the model's preference for relying on specific attributes in case matching.
-
-                Every attribute has two disjoint sets of values. For each pair of attributes, there are four types of combinations. 
-                We use two combinations for training and the remaining two for testing.
-            </p>
-
-            <d-figure id="fig-pairwise_combo_vs_shape">
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/pairwise_combo_vs_shape.png" alt="benchmark category" style="width: 90%">
-                    <figcaption>
-                        <strong>Figure 11:</strong> Uniform motion. (1) Color <i>v.s.</i> shape, (2) Size <i>v.s.</i> shape, (3) Velocity <i>v.s.</i> shape.  
-                        The arrow $\Rightarrow$ signifies that the generated videos shift from their specified conditions to resemble similar training cases. For example, in the first figure, the model is trained on videos of blue balls and red squares. When conditioned with a blue ball, as shown in the bottom, it transforms into a blue square, i.e., mimicking the training case by color.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <d-figure id="fig-pk_examples">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="32%">
-                        <source src="static/video/samples_color_vs_shape.mp4" type="video/mp4">
-                    </video>
-                    &nbsp;
-                    <video  poster=""  id="ade" autoplay controls muted loop width="32%">
-                        <source src="static/video/samples_size_vs_shape.mp4" type="video/mp4">
-                    </video>
-                    &nbsp;
-                    <video  poster=""  id="ade" autoplay controls muted loop width="32%">
-                        <source src="static/video/samples_velocity_vs_shape.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 12:</strong> Generated example videos. The first row the is ground-truth video, while the second row is generated by our model.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <p class="text">
-                <strong>Observation 1</strong>&nbsp; We first compare color, size and velocity against shape. For example, in <a href="fig-pairwise_combo_vs_shape">Figure 11</a> (1),
-                videos of red balls and blue squares with the same range of size and velocity are used for training.
-                 At test time, a blue ball changes shape into a square immediately after the condition frames, while a red square transforms into a ball.
-                Similar observations can be made for the other two settings. <i>This suggests that diffusion-based video models inherently favor other attributes over shape, 
-                which may explain why current open-set video generation models usually struggle with shape preservation.</i>
-            </p>
-
-            <d-figure id="fig-pairwise_combo_no_shape"></d-figure>
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/pairwise_combo_no_shape.png" alt="benchmark category" style="width: 100%">
-                    <figcaption>
-                        <strong>Figure 13:</strong> Uniform motion.  
-                        (1) Velocity <i>v.s.</i> size: The arrow $\rightarrow$ indicates the direction of generated videos shifting from their initial conditions.  
-                        (2) Color <i>v.s.</i> size: Models are trained with small red balls and large blue balls, and evaluated on reversed color-size pair conditions. All generated videos retain the initial color but show slight size shifts from the original.  
-                        (3) Color <i>v.s.</i> velocity: Models are trained with low-speed red balls and high-speed blue balls, and evaluated on reversed color-velocity pair conditions. All generated videos retain the initial color but show large velocity shifts from the original.
-                    </figcaption>
-                </figure>
-            </d-figure>
-            <p class="text">
-                <strong>Observation 2</strong>&nbsp; The other three pairs are presented in <a href="#fig-pairwise_combo_no_shape">Figure 13</a>.
-                For velocity <i>v.s.</i>  size, the combinatorial generalization performance is surprisingly good. 
-                The model effectively maintains the initial size and velocity for most test cases beyond the training distribution. 
-                However, a slight preference for size over velocity is noted, particularly with extreme radius and velocity values 
-                (top left and bottom right in subfigure (1)). 
-                In subfigure (2), color can be combined with size most of the time. 
-                Conversely, for color <i>v.s.</i>  velocity in subfigure (3), high-speed blue balls and low-speed red balls are used for training. 
-                At test time, low-speed blue balls appear much faster than their conditioned velocity. No ball in the testing set changes its color, 
-                indicating that color is prioritized over velocity. 
-
-                <br><br>
-                <strong>Conclusion</strong>&nbsp; Based on the above analysis, we conclude that <strong>prioritization order is as 
-                follows: color > size > velocity > shape</strong>.
-            </p>
-
-
-        </div>
-
-
-        <div id="how_to_combine" class="section"></div>
-        
-            <h2 class="text">How Does Complex Combinatorial Generalization Happen?</h2>
-
-
-            <p class="text">
-                What kind of data can actually enable conceptually-combinable video generation?  We try to answer this question by 
-                indentifing three foundamental combinatorial patterns through experimental design. 
-            </p>
-
-            <d-figure id="fig-spatial_and_temporal_combo">
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/spatial_and_temporal_combo.jpeg" alt="benchmark category" style="width: 90%">
-                    <figcaption>
-                        <strong>Figure 14:</strong> Spatial and temporal combinatorial generalization. The two subsets of the training set contain disjoint physical events. However, the trained model can combine these two types of events across spatial and temporal dimensions.
-                </figure>
-            </d-figure>
-
-
-            <p class="text">
-                <strong>Attribute composition</strong>&nbsp; As shown in <a href="#fig-pairwise_combo_no_shape">Figure 9</a> (1)-(2), 
-                certain attribute pairs—such as velocity and size, or color and size—exhibit some degree of combinatorial generalization.
-            </p>
-
-            <d-figure id="fig-spatial_temporal_combo">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="46%">
-                        <source src="static/video/combo_spatial.mp4" type="video/mp4">
-                    </video>
-                    &nbsp;
-                    <video  poster=""  id="ade" autoplay controls muted loop width="46%">
-                        <source src="static/video/combo_temporal.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 15:</strong> Generated example videos. Left: Spatial combinatorial generalization. Right: Temporal combinatorial generalization.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-
-            <p class="text">
-                <strong>Spatial composition</strong>&nbsp;
-                As given by <a href="#fig-spatial_and_temporal_combo">Figure 14</a> (left side), the training data contains two distinct types of physical events. 
-                One type involves a blue square moving horizontally with a constant velocity while a red ball remains stationary. 
-                In contrast, the other type depicts a red ball moving toward and then bouncing off a wall while the blue square remains stationary. 
-                At test time, when the red ball and the blue square are moving simultaneously, the learned model is able to generate the scenario ]
-                where the red ball bounces off the wall while the blue square continues its uniform motion.
-
-        
-                <br><br>
-                <strong>Temporal composition</strong>&nbsp;
-                As illustrated on the right side of <a href="#fig-spatial_and_temporal_combo">Figure 14</a> , when the training data includes distinct physical 
-                events—half featuring two balls colliding without bouncing and the other half showing a red ball bouncing off a wall—the model learns to combine 
-                these events temporally. Consequently, during evaluation, when the balls collide near the wall, the model accurately predicts the collision and 
-                then determines that the blue ball will rebound off the wall with unchanged velocity.
-
-            </p>
-        </div>
-
-        <div id="visual_ambiguity" class="section"></div>
-        
-            <h2 class="text">Is Video Sufficient for Complete Physics Modeling?</h2>
-
-
-            <p class="text">
-                For a video generation model to function as a world model, the visual representation must provide sufficient information for complete physics modeling. 
-                In our experiments, we found that visual ambiguity leads to significant inaccuracies in fine-grained physics modeling. 
-                For example, in <a href="#fig-visual_ambiguity">Figure 16</a> , it is difficult to determine if a ball can pass through a gap based on vision alone when the size difference is at the pixel level, leading to visually plausible but incorrect results. Similarly, visual ambiguity in a ball’s horizontal position relative to a block can result in different outcomes.
-                These findings suggest that relying solely on visual representations, may be inadequate for accurate physics modeling.
-            </p>
-
-            <d-figure id="fig-visual_ambiguity">
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/ambiguity.png" alt="benchmark category" style="width: 100%">
-                    <figcaption>
-                        <strong>Figure 16:</strong> First row: Ground truth; second row: generated video.  
-                        Ambiguities in visual representation result in inaccuracies in fine-grained physics modeling. 
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <d-figure id="fig-visual_ambiguity_video">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="30%">
-                        <source src="static/video/visual_ambiguity.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 17:</strong> Generated example videos for visual ambiguity. The first row the is ground-truth video, while the second row is generated by our model.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-        </div>
-
-        
-        <hr>
-        <div id="open_discussion" style="position: relative; margin-top: 40px; margin-bottom: 0px;">
-            <h1 class="text" style="margin-top:0px; margin-bottom:10px">Open Discussion</h1>
-
             
-
-            <h2 class="text">Can Language or Numerical Internal States be Helpful in Physical Law Discovery? </h2>
+            <h3 id="qualitative_results" class="text">Qualitative Results</h3>
 
             <p class="text">
-            <strong>Experimental Setup</strong>&nbsp; We experimented with collision scenarios and DiT-B models, adding two variants: one conditioned on vision and numerics, and the other on vision and text. 
-            For numeric conditioning, we map the state vectors to embeddings and add the layer-wise features to video tokens. 
-            For text, we converted initial physical states into natural language descriptions, obtained text embeddings using a T5 encoder, 
-            and then add a cross-attention layer to aggregate textual representations for video tokens.
+                As shown in the top of <strong><a href="#figure-5">Figure 5</a></strong>, baseline SEED-X (b) generates a basic book shape but misses the implicit "lace" attribute. With ImageGen-CoT prompting (c), the model's weak comprehension leads to poor ImageGen-CoT quality and even degraded generation quality. After fine-tuning with ImageGen-CoT dataset (d), with help of ImageGen-CoT, the model first successfully infers the shared attribute "lace" in CoT text and then generates the correct image - a book made of lace. Similarly, as shown in the bottom of <strong><a href="#figure-5">Figure 5</a></strong>, baseline SEED-X (b) only generates a simple egg with an open mouth, ignoring key requirements like "on stone", "in garden", and similar expression (sad with upturned closed mouth). With ImageGen-CoT prompting (c), while the egg is placed on stone, it lacks both the required facial expression and garden environment. After fine-tuning (d), the model successfully understands all task requirements and generates a complete scene with an egg properly placed on a stone in a garden setting, maintaining similar facial features to the input. These qualitative results visually demonstrate the effectiveness of ImageGen-CoT and its corresponding dataset in enhancing model comprehension and generation capability, particularly in handling complex tasks that require attention to detail and scene understanding.
             </p>
 
-            <d-figure id="fig-multimodal_scaling">
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/scaling_collision-multimodal.jpg" alt="benchmark category" style="width: 50%">
+            <d-figure id="figure-5">
+                <figure>
+                    <img data-zoomable="" draggable="false" src="static/image/visible_results_msr_00.jpg" alt="Explainable Analysis Figure" width="100%">
                     <figcaption>
-                        <strong>Figure 18:</strong> First row: Ground truth; second row: generated video.  
-                        Ambiguities in visual representation result in inaccuracies in fine-grained physics modeling. 
+                        <strong>Figure 5:</strong> <strong>Qualitative Results.</strong> Comparison of generated images from different model variants.
                     </figcaption>
                 </figure>
             </d-figure>
 
-            <p class="text">
-                <strong>Results</strong>&nbsp; 
-                As shown in <a href="#fig-multimodal_scaling">Figure 18</a>, for in-distribution generalization, adding numeric and text conditions resulted in 
-                prediction errors comparable to using vision alone. However, in OOD scenarios, the vision-plus-numerics condition exhibited slightly higher errors,
-                while the vision-plus-language condition showed significantly higher errors. 
-                This suggests that visual frames already contain sufficient information for accurate predictions, and probobaly the best modality for generalization. 
-                However, the text knowledge in our setting is limited to the problem setting. Instead, large language models are often trained with large-scale corpus 
-                containing nearly all knowledge in human history. We'd like to triger a discussion on whether this kind of knowledge can be used to make the physical law discovery 
-                problem feasible. 
-                </p>
-
-            
-            <h2 class="text">Can the Generalization Preference be Harnessed or Not?</h2>
-
-            <p class="text">
-            <strong>Our hypothesis on why the preference exists</strong>&nbsp;
-            Since the diffusion model is trained by minimizing the loss associated with predicting VAE latent, we hypothesize that the prioritization may be related to the distance in VAE latent space (though we use pixel space here for clearer illustration) between the test conditions and the training set.
-            Intuitively, when comparing color and shape as in <a href="#fig-pairwise_combo_vs_shape">Figure 11</a> (1), a shape change from a ball to a rectangle results in minor pixel variation, primarily at the corners. In contrast, a color change from blue to red causes a more significant pixel difference. Thus, the model tends to preserve color while allowing shape to vary.
-            From the perspective of pixel variation, the prioritization of color > size > velocity > shape can be explained by the extent of pixel change associated with each attribute. 
-            Changes in color typically result in large pixel variations because it affects nearly every pixel across its surface. In contrast, changes in size modify the number of pixels but do not drastically alter the individual pixels' values. Velocity affects pixel positions over time, leading to moderate variation as the object shifts, while shape changes often involve only localized pixel adjustments, such as at edges or corners. Therefore, the model prioritizes color because it causes the most significant pixel changes, while shape changes are less impactful in terms of pixel variation.
-
-            <br>
-            <strong>Experimental Setup</strong>&nbsp;
-            To further validate this hypothesis, we designed a variant experiment comparing color and shape, as shown in <a href="#fig-pairwise_combo_vs_shape">Figure 19</a>. In this case, we use a blue ball and a red ring. 
-            For the ring to transform into the ball without changing color, it would need to remove the ring's external color, turning it into blank space, and then fill the internal blank space with the ball's color, resulting in significant pixel variation.
-
-            </p>
-
-            <d-figure id="fig-ring_color_vs_shape">
-                <figure style="text-align: center;">
-                    <img data-zoomable="" draggable="false" src="static/image/ring_color_vs_shape.jpg" alt="benchmark category" style="width: 70%">
-                    <figcaption>
-                        <strong>Figure 19:</strong> First row: Ground truth; second row: generated video.  
-                        Ambiguities in visual representation result in inaccuracies in fine-grained physics modeling. 
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <p class="text">
-                <strong>Results</strong>&nbsp; 
-                Interestingly, in this scenario, unlike the previous experiments shown in <a href="#fig-pairwise_combo_vs_shape">Figure 11</a>  (1), the prioritization of color > shape does not hold. The red ring can transform into either a red ball or a blue ring, as demonstrated by the examples. 
-This observation suggests that the model's prioritization may indeed depend on the complexity of the pixel transformations required for each attribute change. Future work could explore more precise measurements of these variations in pixel or VAE latent space to better understand the model's training data retrieval process.
-            </p>
-
-
-
-        </div>
-
-
-
-
-        <hr>
-
-        <div id="additional_samples" style="position: relative; margin-top: 40px; margin-bottom: 0px;">
-            <h1 class="text" style="margin-top:0px; margin-bottom:10px">Additional Ssamples</h1>
-
-            <h2 class="text">Combinatorial Generalization Examples</h2>
-            <h5 class="text">More examples</h5>
-            <d-figure id="fig-phyre_demo">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="100%">
-                        <source src="static/video/phyre_scene_concat_case2.mp4" type="video/mp4">
-                    </video>
-                    <video  poster=""  id="ade" autoplay controls muted loop width="100%">
-                        <source src="static/video/phyre_scene_concat_case3.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 20:</strong> Generated sample videos. First row: ground gruth. Second Row: the model learned with 60 templates.
-                        Thrid row: the model learned with 30 templates. Forth row: the model learned with 6 templates.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <h5 class="text">Three Types of Generated  Videos.</h5>
-            <p class="text">
-            We observe three types of generated videos in terms of how accruate the physical event is. <strong>Type 1</strong>: The generated videos are 
-            visually similar or identical to the ground-truth video from physical simulation.  <strong>Type 2</strong>: The generated videos are different from 
-            ground-truth videos but human eyes feel it is reasonable (not breaking any physical laws).  <strong> Type 3</strong>: A person can easily tell the video is wrong. 
-            </p>
-            <d-figure id="fig-phyre_demo">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="100%">
-                        <source src="static/video/phyre_xl60_accurate.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 21:</strong>  Type 1 examples. 
-                    </figcaption>
-                </figure>
-            </d-figure>
-            <d-figure id="fig-phyre_demo">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="100%">
-                        <source src="static/video/phyre_xl60_inaccurate.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 22:</strong> Type 2 examples.
-                    </figcaption>
-                </figure>
-            </d-figure>
-            <d-figure id="fig-phyre_demo">
-                <figure style="text-align: center;">
-                    <video  poster=""  id="ade" autoplay controls muted loop width="100%">
-                        <source src="static/video/phyre_xl60_fail.mp4" type="video/mp4">
-                    </video>
-                    <figcaption>
-                        <strong>Figure 23:</strong> Type 3 examples.
-                    </figcaption>
-                </figure>
-            </d-figure>
-
-            <p class="text">
-                
-            </p>
         </div>
 
         </d-article>
